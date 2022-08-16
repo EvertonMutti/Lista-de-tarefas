@@ -8,8 +8,8 @@ Created on Tue Aug  9 19:42:42 2022
 def TelaInicial():
     adicionartarefa = '1 - Adicionar Tarefa'
     Listatarefa = '2 - Lista de tarefas'
-    DesfazerTarefa = '3 - Desfazer a ultima ação'
-    RefazTarefa = '4 - Refaz/Altera a ultima ação'
+    DesfazerTarefa = '3 - Desfazer a ultima alteração'
+    RefazTarefa = '4 - Refaz/Altera a ultima alteração'
     Escrevetxt = '5 - Salvar como um arquivo txt'
     print("Por favor selecione a opção que deseja meu nobre:")
     sOpcao = input(f'{adicionartarefa}\n{Listatarefa}\n{DesfazerTarefa}\n{RefazTarefa}\n{Escrevetxt}\n')
@@ -32,26 +32,34 @@ def TelaInicial():
     elif sOpcao == '5':
         sNome = input('Digite um título para seu arquivo, caso não queira, aperte ENTER')
         if sNome == None or sNome == '':
-            EscreveTxt()
-            sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
-            if sOpcao.upper() == 'Y':
-                print('Gracias :)')
+            if EscreveTxt():
+                sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
+                if sOpcao.upper() == 'Y':
+                    print('Gracias :)')
+                else:
+                    return TelaInicial()
             else:
+                print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
                 return TelaInicial()
         else: 
-            EscreveTxt(sNome)
-            sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
-            if sOpcao.upper() == 'Y':
-                print('Gracias :)')
+            if EscreveTxt(sNome):
+                sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
+                if sOpcao.upper() == 'Y':
+                    print('Gracias :)')
+                else:
+                    return TelaInicial()
             else:
+                print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
                 return TelaInicial()
 def EscreveTxt(Var = 'Lista de Tarefas'):
     with open(f'{Var}' + '.txt', 'w+') as file:
         file.write('Sua lista de tarefas:\n')
         n = 1
         for n, tarefas in enumerate(lTarefas):
-            file.write(f'\t{n} - {tarefas}\n')
-            
+             if file.write(f'\t{n} - {tarefas}\n'):
+                 return True
+             else:
+                 return False
 def VoltarTelaInicial():
     sTelaInicial = input('Deseja voltar para tela inicial??\n[Y] | [N]\t')
     if sTelaInicial.upper == 'Y':
