@@ -4,53 +4,75 @@ Created on Tue Aug  9 19:42:42 2022
 
 @author: Everton SSD
 """
+from DegueMutti import VerificaInt, StringToNumber
 
 def TelaInicial():
     adicionartarefa = '1 - Adicionar Tarefa'
     Listatarefa = '2 - Lista de tarefas'
-    DesfazerTarefa = '3 - Desfazer a ultima alteração'
-    RefazTarefa = '4 - Refaz/Altera a ultima alteração'
+    DesfazerTarefa = '3 - Desfazer a ultima Tarefa'
+    RefazTarefa = '4 - Refaz a ultima Tarefa'
     Escrevetxt = '5 - Salvar como um arquivo txt'
     print("Por favor selecione a opção que deseja meu nobre:")
     sOpcao = input(f'{adicionartarefa}\n{Listatarefa}\n{DesfazerTarefa}\n{RefazTarefa}\n{Escrevetxt}\n')
-    if sOpcao == '1':
-        lTarefas.append(input('Digite o que desejar meu nobre:\n'))
-        return ApresentarTarefa()
-    elif sOpcao == '2':
-        if lTarefas == [] or None:
-            print('Não há nada na sua lista de tarefa')
-            return TelaInicial()
-        else:
-            for n, tarefas in enumerate(lTarefas):
-                print(f'\t{n} - {tarefas}')
-            print('\n')
-            return TelaInicial()
-    elif sOpcao == '3':
-        ...
-    elif sOpcao == '4':
-        ...
-    elif sOpcao == '5':
-        sNome = input('Digite um título para seu arquivo, caso não queira, aperte ENTER')
-        if sNome == None or sNome == '':
-            if EscreveTxt():
-                sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
-                if sOpcao.upper() == 'Y':
-                    print('Gracias :)')
-                else:
-                    return TelaInicial()
-            else:
-                print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
+    if VerificaInt(StringToNumber(sOpcao)):
+        if sOpcao == '1':
+            lTarefas.append(input('Digite o que desejar meu nobre:\n'))
+            return ApresentarTarefa()
+        elif sOpcao == '2':
+            if lTarefas == [] or None:
+                print('Não há nada na sua lista de tarefa')
                 return TelaInicial()
-        else: 
-            if EscreveTxt(sNome):
-                sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
-                if sOpcao.upper() == 'Y':
-                    print('Gracias :)')
-                else:
-                    return TelaInicial()
             else:
-                print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
+                for n, tarefas in enumerate(lTarefas):
+                    print(f'\t{n} - {tarefas}')
+                print('\n')
                 return TelaInicial()
+        elif sOpcao == '3':
+            Desfaz(lTarefas, lListaTemp)
+            return TelaInicial()
+        elif sOpcao == '4':
+            refaz(lTarefas, lListaTemp)
+            return TelaInicial()
+        elif sOpcao == '5':
+            sNome = input('Digite um título para seu arquivo, caso não queira, aperte ENTER')
+            if sNome == None or sNome == '':
+                if EscreveTxt():
+                    sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
+                    if sOpcao.upper() == 'Y':
+                        print('Gracias :)')
+                    else:
+                        return TelaInicial()
+                else:
+                    print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
+                    return TelaInicial()
+            else: 
+                if EscreveTxt(sNome):
+                    sOpcao = input('Deseja finalizar por aqui sua lista?\n[Y] | [N]\t')
+                    if sOpcao.upper() == 'Y':
+                        print('Gracias :)')
+                    else:
+                        return TelaInicial()
+                else:
+                    print('Infelizmente ocorreu uma falha na criação de seu arquivo, mil desculpas.')
+                    return TelaInicial()
+    else:
+        print('Comando não identificado, por favor Digite apenas números')
+        return TelaInicial()
+            
+def refaz(Lista, l2):
+    if l2 == []:
+        print('Não há nenhuma tarefa para ser refeita :)')
+    else:
+        listaTemp = l2.pop()
+        Lista.append(listaTemp)
+    
+def Desfaz(lista, l2):
+    if lista == []:
+        print('Não há nenhuma tarefa para ser desfeita')
+    else:
+        listatemp = lista.pop()
+        l2.append(listatemp)
+    
 def EscreveTxt(Var = 'Lista de Tarefas'):
     with open(f'{Var}' + '.txt', 'w+') as file:
         file.write('Sua lista de tarefas:\n')
@@ -88,5 +110,6 @@ def Apresentacao():
     
 if __name__ == '__main__':
     lTarefas = []
+    lListaTemp = []
     sTarefa = ''
     Apresentacao()  
