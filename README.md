@@ -1,2 +1,2 @@
 # Lista-de-tarefas
-Esta aplicação tem o intuito de anotar tudo que você quiser e transforma em txt logo após.
+Digite o que queira no terminal e será feito em txt com um menu dinâmico.
